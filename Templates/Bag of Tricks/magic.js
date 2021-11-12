@@ -18,6 +18,7 @@ class MagicBag {
     this.things = [];
     this.rooms = [];
     this.actions = [];
+    this.rulebooks = [];
   }
 
   addThing(thing) {
@@ -30,5 +31,14 @@ class MagicBag {
 
   setActions(actions) {
     this.actions = actions;
+  }
+
+  setRulebooks(rulebooks) {
+    this.rulebooks = rulebooks.map((rulebook) => {
+      rulebook.routine =
+        `B${rulebook.num}_` +
+        rulebook.name.toLowerCase().replace(/\s/g, "_").substring(0, 23);
+      return rulebook;
+    });
   }
 }
