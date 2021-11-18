@@ -44,19 +44,10 @@ Include (-
 	print "]";
 	rtrue;
 ];
-! [ PrintIdentifiers a;
-! 	a = #identifiers_table-->10;
-! 	new_line;
-! 	print a;
-! 	new_line;
-! 	print (string) a-->0;
-! 	new_line;
-! 	print (string) a-->1;
-! 	new_line;
-! 	!for (i=1:i<#identifiers_table-->0:i++) {
-! 	!
-! 	!}
-! ];
+[ FollowRulebookWithArg rb arg;
+	noun = arg;
+	return FollowRulebook(rb);
+];
 -).
 
 To say list of actions: (- PrintActionDataJSON(); -).
@@ -71,9 +62,19 @@ To say JSON for (room - a room):
 	say "{ 'name': '[a room]', 'id' : '[object ID for room]' }";
 
 To say the return value of rulebook (RB - number): (- print FollowRulebook({RB}); -).
-Manually triggering a rulebook is an action applying to a number.
-Understand "trigger [number]" as manually triggering a rulebook.
-Carry out manually triggering a rulebook: say "[the return value of rulebook number understood]".
+To say the return value of rulebook (RB - number) with argument (arg - number): (- print FollowRulebookWithArg({RB}, {arg}); -).
+Manually triggering a rulebook is an action applying to one topic.
+Understand "trigger [text]" as manually triggering a rulebook.
+Carry out manually triggering a rulebook:
+	if the topic understood matches the regular expression "^(\d+),(\d+)$":
+		say "trigger one rb with arg";
+		[ "converted into a number" is provided by Vorple I7 code ]
+		let rb be the text matching subexpression 1 converted into a number;
+		let arg be the text matching subexpression 2 converted into a number;
+		say "[the return value of rulebook rb with argument arg]";
+	if the topic understood matches the regular expression "^(\d+)$":
+		let rb be the text matching subexpression 1 converted into a number;
+		say "[the return value of rulebook rb]".
 
 When play begins:
 	repeat with item running through things:
