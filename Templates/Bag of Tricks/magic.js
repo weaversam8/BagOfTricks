@@ -12,6 +12,29 @@ class Thing {
     this.inInventory = inInventory;
   }
 }
+
+class Action {
+  constructor(slug, id, name) {
+    this.slug = slug;
+    this.id = id;
+    this.name = name;
+  }
+
+  setRulebook(type, rulebook) {
+    switch (type) {
+      case "check":
+        this.checkRulebook = rulebook;
+        break;
+      case "carry out":
+        this.carryOutRulebook = rulebook;
+        break;
+      case "report":
+        this.reportRulebook = rulebook;
+        break;
+    }
+  }
+}
+
 class Rulebook {
   constructor(num, name, routine) {
     this.num = num;
@@ -48,7 +71,9 @@ class MagicBag {
   }
 
   setActions(actions) {
-    this.actionsList = actions;
+    this.actionsList = actions.map((action) => {
+      return new Action(action.slug, action.id, action.name);
+    });
     this.actionsList.forEach((action) => {
       this.actionsMap[action.name.toLowerCase()] = action;
     });
@@ -64,7 +89,7 @@ class MagicBag {
       );
     });
 
-    // this.assignRulebooksToActions();
+    this.assignRulebooksToActions();
   }
 
   assignRulebooksToActions() {
@@ -73,17 +98,10 @@ class MagicBag {
         /^(check|carry out|report)\s(.*)\s(rulebook)$/i
       );
       if (matches) {
-        let action = this.actionsMap[matches[2].toLowerCase()];
-        switch (matches[1]) {
-          case "check":
-            action.checkRulebook = rulebook;
-            break;
-          case "carry out":
-            action.carryOutRulebook = rulebook;
-            break;
-          case "report":
-            action.reportRulebook = rulebook;
-            break;
+        let actionName = matches[2].toLowerCase();
+        if (actionName in this.actionsMap) {
+          let action = this.actionsMap[actionName];
+          action.setRulebook(matches[1], rulebook);
         }
       }
     });
