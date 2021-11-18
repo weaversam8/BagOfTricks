@@ -9,3 +9,5 @@ _Documentation pending._
 - [ ] [Instead rules](http://inform7.com/book/WI_7_2.html) do not trigger when triggering rulebooks manually
 - [ ] [After rules](http://inform7.com/book/WI_7_5.html) also do not trigger
 - [ ] `B10_setting_action_variables` doesn't run when triggering rulebooks manually, breaks the `##Go`, `##Exit`, and `##Look` actions
+- [ ] Actions that take two objects as parameters are not yet implemented
+- (and undoubtedly a lot more things are broken that are not listed here...)
