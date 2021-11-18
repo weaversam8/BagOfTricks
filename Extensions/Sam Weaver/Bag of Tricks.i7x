@@ -70,6 +70,10 @@ To say JSON for (thingy - a thing):
 To say JSON for (room - a room):
 	say "{ 'name': '[a room]', 'id' : '[object ID for room]' }";
 
+To say the return value of rulebook (RB - number): (- print FollowRulebook({RB}); -).
+Manually triggering a rulebook is an action applying to a number.
+Understand "trigger [number]" as manually triggering a rulebook.
+Carry out manually triggering a rulebook: say "[the return value of rulebook number understood]".
 
 When play begins:
 	repeat with item running through things:
