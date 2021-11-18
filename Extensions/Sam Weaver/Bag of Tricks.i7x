@@ -44,9 +44,14 @@ Include (-
 	print "]";
 	rtrue;
 ];
-[ FollowRulebookWithArg rb arg;
+[ FollowRulebookCustom rb ret;
+	ret = FollowRulebook(rb);
+	return ret;
+];
+[ FollowRulebookWithArg rb arg ret;
 	noun = arg;
-	return FollowRulebook(rb);
+	ret = FollowRulebook(rb);
+	return ret;
 ];
 -).
 
@@ -61,13 +66,12 @@ To say JSON for (thingy - a thing):
 To say JSON for (room - a room):
 	say "{ 'name': '[a room]', 'id' : '[object ID for room]' }";
 
-To say the return value of rulebook (RB - number): (- print FollowRulebook({RB}); -).
+To say the return value of rulebook (RB - number): (- print FollowRulebookCustom({RB}); -).
 To say the return value of rulebook (RB - number) with argument (arg - number): (- print FollowRulebookWithArg({RB}, {arg}); -).
 Manually triggering a rulebook is an action applying to one topic.
 Understand "trigger [text]" as manually triggering a rulebook.
 Carry out manually triggering a rulebook:
 	if the topic understood matches the regular expression "^(\d+),(\d+)$":
-		say "trigger one rb with arg";
 		[ "converted into a number" is provided by Vorple I7 code ]
 		let rb be the text matching subexpression 1 converted into a number;
 		let arg be the text matching subexpression 2 converted into a number;
