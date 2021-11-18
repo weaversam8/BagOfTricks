@@ -11,18 +11,23 @@ Include action creations in the debugging log.
 Include spatial map in the debugging log.
 
 Include (-
-[ PrintActionDataJSON i ita;
+[ PrintActionDataJSON i ita mask;
   print "[";
   for (i=0:i<AD_RECORDS:i++) {
 	ita = ActionData-->(1+6*i);
+	mask = ActionData-->(2+6*i);
 	print "{~slug~:~";
 	print (DebugAction) ita;
 	print "~,~id~:";
 	print ita;
 	print ",~name~:~";
 	SayActionName(ita);
-	if (i == AD_RECORDS - 1) print "~}";
-	else print "~},";
+	print "~,~args~:";
+	if (mask == $$00000000) print 0;
+	else if (mask == $$00011001) print 2;
+	else print 1;
+	if (i == AD_RECORDS - 1) print "}";
+	else print "},";
   }
   print "]";
   rtrue;

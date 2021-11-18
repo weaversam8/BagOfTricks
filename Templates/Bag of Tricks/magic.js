@@ -14,10 +14,11 @@ class Thing {
 }
 
 class Action {
-  constructor(slug, id, name) {
+  constructor(slug, id, name, args) {
     this.slug = slug;
     this.id = id;
     this.name = name;
+    this.args = args;
   }
 
   setRulebook(type, rulebook) {
@@ -72,7 +73,7 @@ class MagicBag {
 
   setActions(actions) {
     this.actionsList = actions.map((action) => {
-      return new Action(action.slug, action.id, action.name);
+      return new Action(action.slug, action.id, action.name, action.args);
     });
     this.actionsList.forEach((action) => {
       this.actionsMap[action.name.toLowerCase()] = action;
