@@ -59,9 +59,14 @@ To say list of actions: (- PrintActionDataJSON(); -).
 To say list of rulebooks: (- PrintRulebooksJSON(); -).
 [ To say list of identifiers: (- PrintIdentifiers(); -). ]
 To say object ID for (O - an object): (- print {O}; -).
+To say carrying boolean for (thingy - a thing):
+	if player has thingy:
+		say "true";
+	otherwise:
+		say "false".
 
 To say JSON for (thingy - a thing):	
-	say "{ 'name' :  '[a thingy]', 'id' : '[object ID for thingy]', 'location' : '[object ID for location of thingy]' }";
+	say "{ 'name' :  '[a thingy]', 'id' : '[object ID for thingy]', 'location' : '[object ID for location of thingy]', 'inInventory': [carrying boolean for thingy] }";
 	
 To say JSON for (room - a room):
 	say "{ 'name': '[a room]', 'id' : '[object ID for room]' }";

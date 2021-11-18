@@ -5,10 +5,11 @@
  */
 
 class Thing {
-  constructor(name, id, location) {
+  constructor(name, id, location, inInventory) {
     this.name = name;
     this.id = id;
     this.location = location;
+    this.inInventory = inInventory;
   }
 }
 class Rulebook {
@@ -37,7 +38,9 @@ class MagicBag {
   }
 
   addThing(thing) {
-    this.things.push(new Thing(thing.name, thing.id, thing.location));
+    this.things.push(
+      new Thing(thing.name, thing.id, thing.location, thing.inInventory)
+    );
   }
 
   addRoom(room) {
