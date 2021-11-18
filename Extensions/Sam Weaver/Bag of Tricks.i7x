@@ -51,11 +51,21 @@ Include (-
 ];
 [ FollowRulebookCustom rb ret;
 	ret = FollowRulebook(rb);
+	print "RB";
+	print rb;
+	print ":";
+	print ret;
 	return ret;
 ];
 [ FollowRulebookWithArg rb arg ret;
 	noun = arg;
 	ret = FollowRulebook(rb);
+	print "RB";
+	print rb;
+	print ",";
+	print arg;
+	print ":";
+	print ret;
 	return ret;
 ];
 -).
@@ -76,8 +86,8 @@ To say JSON for (thingy - a thing):
 To say JSON for (room - a room):
 	say "{ 'name': '[a room]', 'id' : '[object ID for room]' }";
 
-To say the return value of rulebook (RB - number): (- print FollowRulebookCustom({RB}); -).
-To say the return value of rulebook (RB - number) with argument (arg - number): (- print FollowRulebookWithArg({RB}, {arg}); -).
+To say the return value of rulebook (RB - number): (- FollowRulebookCustom({RB}); -).
+To say the return value of rulebook (RB - number) with argument (arg - number): (- FollowRulebookWithArg({RB}, {arg}); -).
 Manually triggering a rulebook is an action applying to one topic.
 Understand "trigger [text]" as manually triggering a rulebook.
 Carry out manually triggering a rulebook:

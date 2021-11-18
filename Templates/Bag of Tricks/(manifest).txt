@@ -106,9 +106,8 @@ g
     };
 
     window.magic = MagicBag.getInstance();
-    vorple.addEventListener( 'expectCommand', () => {
-      console.log(window.magic);
-    });
+    vorple.addEventListener( 'expectCommand', window.magic.expectCommand);
+    vorple.output.addOutputFilter(magic.outputFilter);
 
     vorple.debug.off();
     vorple.init({ debug_info_chunk: true });

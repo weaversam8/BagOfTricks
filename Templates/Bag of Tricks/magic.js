@@ -34,6 +34,54 @@ class Action {
         break;
     }
   }
+
+  triggerRulebook(rulebook, ...args) {
+    if (MagicBag.getInstance().activeAction) {
+      throw new Error(
+        "Another action rulebook cannot be triggered while we're waiting for the response of a previous action rulebook."
+      );
+    }
+
+    if (this.args !== args.length)
+      throw new Error(
+        `Invalid number of arguments for action ${this.slug}. ${this.args} expected, ${args.length} provided.`
+      );
+    const rulebookNum = rulebook.num;
+    let commandSpecifier = `${rulebookNum}`;
+    args.forEach((arg, i) => {
+      commandSpecifier += `,${arg.id}`;
+    });
+    vorple.prompt.queueCommand(`trigger ${commandSpecifier}`, true);
+    return new Promise((resolve, reject) => {
+      MagicBag.getInstance().activeAction = {
+        resolve,
+        reject,
+        commandSpecifier,
+      };
+    });
+  }
+
+  check(...args) {
+    if (!this.checkRulebook)
+      throw new Error("No check rulebook defined for action " + this.slug);
+
+    MagicBag.getInstance().hideVorpleOutput = true;
+    return this.triggerRulebook(this.checkRulebook, ...args);
+  }
+
+  carryOut(...args) {
+    if (!this.carryOutRulebook)
+      throw new Error("No carry out rulebook defined for action " + this.slug);
+
+    return this.triggerRulebook(this.carryOutRulebook, ...args);
+  }
+
+  report(...args) {
+    if (!this.reportRulebook)
+      throw new Error("No report rulebook defined for action " + this.slug);
+
+    return this.triggerRulebook(this.reportRulebook, ...args);
+  }
 }
 
 class Rulebook {
@@ -59,6 +107,7 @@ class MagicBag {
     this.actionsList = [];
     this.actionsMap = {};
     this.rulebooks = [];
+    this.activeAction = null;
   }
 
   addThing(thing) {
@@ -106,5 +155,40 @@ class MagicBag {
         }
       }
     });
+  }
+
+  // This function runs every time Inform prints text and allows us to potentially filter that output.
+  outputFilter(output, meta) {
+    const magic = MagicBag.getInstance();
+
+    // if there's an active action, we want to see if we have a return type
+
+    if (magic.activeAction) {
+      const regex = new RegExp(
+        "RB" + magic.activeAction.commandSpecifier + ":(\\d+)"
+      );
+      let matches = output.match(regex);
+      if (matches) {
+        const retValue = matches[1];
+        if (retValue === "0") {
+          magic.activeAction.resolve(true);
+        } else {
+          magic.activeAction.reject(retValue);
+        }
+        magic.activeAction = null;
+        output = output.replace(regex, "");
+      }
+    }
+
+    if (magic.hideVorpleOutput) {
+      return "";
+    } else return output;
+  }
+
+  // This function runs every time a "turn" is over and Inform is once again prompting the user for input.
+  expectCommand() {
+    const magic = MagicBag.getInstance();
+    magic.hideVorpleOutput = false;
+    console.log(magic);
   }
 }
