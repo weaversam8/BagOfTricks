@@ -102,22 +102,35 @@ class MagicBag {
   }
 
   constructor() {
-    this.things = [];
-    this.rooms = [];
+    this.things = {};
+    this.rooms = {};
     this.actionsList = [];
     this.actionsMap = {};
     this.rulebooks = [];
     this.activeAction = null;
   }
 
-  addThing(thing) {
-    this.things.push(
-      new Thing(thing.name, thing.id, thing.location, thing.inInventory)
-    );
+  syncThing(thing) {
+    if (thing.id in this.things) {
+      this.things[thing.id].name = thing.name;
+      this.things[thing.id].location = thing.location;
+      this.things[thing.id].inInventory = thing.inInventory;
+    } else {
+      this.things[thing.id] = new Thing(
+        thing.name,
+        thing.id,
+        thing.location,
+        thing.inInventory
+      );
+    }
   }
 
-  addRoom(room) {
-    this.rooms.push(room);
+  syncRoom(room) {
+    if (room.id in this.rooms) {
+      this.rooms[room.id].name = room.name;
+    } else {
+      this.rooms[room.id] = room;
+    }
   }
 
   setActions(actions) {

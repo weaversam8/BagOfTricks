@@ -101,12 +101,15 @@ Carry out manually triggering a rulebook:
 		say "[the return value of rulebook rb]".
 
 When play begins:
-	repeat with item running through things:
-		execute JavaScript command "magic.addThing([JSON for item])";
-	repeat with room running through rooms:
-		execute JavaScript command "magic.addRoom([JSON for room])";
 	execute JavaScript command "magic.setActions([list of actions])";
 	execute JavaScript command "magic.setRulebooks([list of rulebooks])";
+	Follow the every turn rulebook.
+
+Every turn:
+	repeat with item running through things:
+		execute JavaScript command "magic.syncThing([JSON for item])";
+	repeat with room running through rooms:
+		execute JavaScript command "magic.syncRoom([JSON for room])";
 	[ say "[list of identifiers]"; ]
 
 Bag of Tricks ends here.
